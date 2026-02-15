@@ -7,6 +7,7 @@ Get API key from https://scrapeops.io/app/headers
 ```
 SCRAPEOPS_API_KEY=""
 ALLOWED_LANGS="kmr_Latn,ckb_Arab" # , seperated languages text you want to collect, default is kmr_Latn,ckb_Arab,diq_Latn
+TEXT_MIN_WORD_COUNT # min word of a text to collect, default to 100
 ```
 
 

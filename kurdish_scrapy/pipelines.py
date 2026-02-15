@@ -9,12 +9,12 @@
 from scrapy.exceptions import DropItem
 
 
-from kurdish_scrapy.settings import ALLOWED_LANGS
+from kurdish_scrapy.settings import ALLOWED_LANGS, TEXT_MIN_WORD_COUNT
 
 
 class LenPipeline:
     def process_item(self, item, spider):
-        if item["word_count"] < 100:
+        if item["word_count"] < TEXT_MIN_WORD_COUNT:
             print("Text is too short, dropping item")
             raise DropItem("Text is too short")
 
