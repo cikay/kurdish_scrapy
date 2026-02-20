@@ -100,6 +100,10 @@ SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 10
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = "https://headers.scrapeops.io/v1/user-agents?"
 
+ALLOWED_DOMAINS = [
+    "nuhev.com"
+]
+
 # keep only Kurdish-related languages
 # kmr_Latn → Kurmanji (Northern Kurdish, Latin script)
 # ckb_Arab → Sorani (Central Kurdish, often in Arabic script)
