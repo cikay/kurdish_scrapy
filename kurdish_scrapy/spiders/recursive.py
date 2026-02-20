@@ -1,7 +1,6 @@
 import scrapy
 from typing import Iterable, List, Optional
 
-from extractor.text_extractor import ArticleExtractor
 from extractor.url_extractor import UrlExtractor
 from extractor.protocol import ContentExtractorProtocol
 
@@ -22,7 +21,7 @@ class RecursiveSpider(scrapy.Spider):
     ):
         super().__init__(*args, **kwargs)
         self.allowed_domains = []
-        self.content_extractor = content_extractor or ArticleExtractor()
+        self.content_extractor = content_extractor
         self.start_urls = []
 
     def parse(self, response):
