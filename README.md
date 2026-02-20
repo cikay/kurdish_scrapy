@@ -70,7 +70,7 @@ DOMAINS = [
 ### Run the spider
 
 ```bash
-scrapy crawl recursive_spider -o output.csv
+python main.py --output output.csv
 ```
 
 Supported output formats: `.csv`, `.json`, `.jsonl`
