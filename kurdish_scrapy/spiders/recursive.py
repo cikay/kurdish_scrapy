@@ -31,7 +31,7 @@ class RecursiveSpider(scrapy.Spider):
             print(f"[DEBUG] Skipped (not HTML): {response.url}")
             return
 
-        result = self.content_extractor.extract(response.url, response.text)
+        result = self.content_extractor.extract(response.text, response.url)
         if result:
             print(f"[DEBUG] Yielding article: {response.url}")
             yield result

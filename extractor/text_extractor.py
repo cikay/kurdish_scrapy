@@ -34,8 +34,8 @@ class ArticleExtractor:
 
     def extract(
         self,
-        url: str,
         html: str,
+        url: str,
     ) -> Optional[dict]:
         """Extract article content from a URL.
 
