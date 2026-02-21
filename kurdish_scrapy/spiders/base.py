@@ -1,7 +1,6 @@
 import scrapy
 from typing import Iterable, List, Optional
 
-from extractor.text_extractor import ArticleExtractor
 from extractor.protocol import ContentExtractorProtocol
 
 
@@ -19,7 +18,7 @@ class BaseSpider(scrapy.Spider):
     ):
         super().__init__(*args, **kwargs)
         self.allowed_domains = []
-        self.content_extractor = content_extractor or ArticleExtractor()
+        self.content_extractor = content_extractor
         self.start_urls = []
 
     @classmethod
