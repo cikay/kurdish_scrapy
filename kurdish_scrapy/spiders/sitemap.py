@@ -6,7 +6,6 @@ from kurdish_scrapy.spiders.base import BaseSpider
 
 class SitemapSpider(BaseSpider, BaseSitemapSpider):
     name = "sitemap_spider"
-    sitemap_urls = ["https://www.nuhev.com/robots.txt"]
 
     def parse(self, response):
         print(f"[DEBUG] Processing: {response.url}")
@@ -17,3 +16,11 @@ class SitemapSpider(BaseSpider, BaseSitemapSpider):
         result = self.content_extractor.extract(response.text, response.url)
         if result:
             yield result
+
+    @classmethod
+    def from_crawler(cls, crawler, *args, **kwargs):
+        spider = super().from_crawler(crawler, *args, **kwargs)
+        spider.sitemap_urls = [
+            f"https://{domain}/robots.txt" for domain in spider.allowed_domains
+        ]
+        return spider
