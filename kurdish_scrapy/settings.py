@@ -100,10 +100,6 @@ SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 10
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = "https://headers.scrapeops.io/v1/user-agents?"
 
-ALLOWED_DOMAINS = [
-    "nuhev.com"
-]
-
 # keep only Kurdish-related languages
 # kmr_Latn → Kurmanji (Northern Kurdish, Latin script)
 # ckb_Arab → Sorani (Central Kurdish, often in Arabic script)
@@ -111,4 +107,4 @@ ALLOWED_DOMAINS = [
 ALLOWED_LANGS = os.getenv("ALLOWED_LANGS", "kmr_Latn,ckb_Arab,diq_Latn").split(",")
 TEXT_MIN_WORD_COUNT = int(os.getenv("TEXT_MIN_WORD_COUNT", 100))
 
-URLS_TO_CRAWL = ["https://www.nuhev.com/", "https://ajansawelat.com/"]
+CRAWLING_DOMAINS = ["https://www.nuhev.com/", "https://ajansawelat.com/"]

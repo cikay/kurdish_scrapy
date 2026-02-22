@@ -61,7 +61,7 @@ TEXT_MIN_WORD_COUNT=100
 Edit `kurdish_scrapy/spiders/recursive.py` and add your target domains:
 
 ```python
-DOMAINS = [
+CRAWLING_DOMAINS = [
     "example-kurdish-site.com",
     "another-site.org",
 ]
