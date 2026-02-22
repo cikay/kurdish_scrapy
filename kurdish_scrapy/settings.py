@@ -110,3 +110,5 @@ ALLOWED_DOMAINS = [
 # diq_Latn → Zazaki (Latin script)
 ALLOWED_LANGS = os.getenv("ALLOWED_LANGS", "kmr_Latn,ckb_Arab,diq_Latn").split(",")
 TEXT_MIN_WORD_COUNT = int(os.getenv("TEXT_MIN_WORD_COUNT", 100))
+
+URLS_TO_CRAWL = ["https://www.nuhev.com/", "https://ajansawelat.com/"]

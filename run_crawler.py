@@ -25,7 +25,6 @@ def _infer_feed_format(output_path: str) -> str:
     return feed_format
 
 
-
 def run_crawler(output_path: str, content_extractor: ContentExtractorProtocol) -> None:
     feed_format = _infer_feed_format(output_path)
     settings = get_project_settings()
@@ -40,7 +39,14 @@ def run_crawler(output_path: str, content_extractor: ContentExtractorProtocol) -
         },
         priority="cmdline",
     )
-
+    urls_to_crawl = settings.get("URLS_TO_CRAWL")
     crawler_process = CrawlerProcess(settings)
-    crawler_process.crawl(RecursiveSpider, content_extractor=content_extractor)
+
+    for url in urls_to_crawl:
+        crawler_process.crawl(
+            RecursiveSpider,
+            url=url,
+            content_extractor=content_extractor,
+        )
+
     crawler_process.start()
