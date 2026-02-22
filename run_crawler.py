@@ -39,7 +39,7 @@ def run_crawler(output_path: str, content_extractor: ContentExtractorProtocol) -
         },
         priority="cmdline",
     )
-    urls_to_crawl = settings.get("URLS_TO_CRAWL")
+    urls_to_crawl = settings.get("CRAWLING_DOMAINS")
     crawler_process = CrawlerProcess(settings)
 
     for url in urls_to_crawl:
