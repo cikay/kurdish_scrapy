@@ -58,12 +58,12 @@ TEXT_MIN_WORD_COUNT=100
 
 ### Configure target domains
 
-Edit `kurdish_scrapy/spiders/recursive.py` and add your target domains:
+Edit `kurdish_scrapy/settings.py` and update `CRAWLING_DOMAINS`:
 
 ```python
 CRAWLING_DOMAINS = [
-    "example-kurdish-site.com",
-    "another-site.org",
+    "https://www.nuhev.com/",
+    "https://ajansawelat.com/",
 ]
 ```
 
@@ -72,6 +72,8 @@ CRAWLING_DOMAINS = [
 ```bash
 python main.py --output output.csv
 ```
+
+For each domain in `CRAWLING_DOMAINS`, the runner tries `SitemapSpider` first (using `robots.txt` and common sitemap paths). If no sitemap is found, it falls back to `RecursiveSpider`.
 
 Supported output formats: `.csv`, `.json`, `.jsonl`
 
@@ -121,7 +123,9 @@ The spider outputs the following fields:
 ```
 ├── kurdish_scrapy/
 │   ├── spiders/
-│   │   └── recursive.py      # Main recursive spider
+│   │   ├── sitemap.py        # Sitemap-based spider
+│   │   ├── recursive.py      # Recursive fallback spider
+│   │   └── base.py           # Shared spider base class
 │   ├── items.py              # Data item schema
 │   ├── middlewares.py        # User agent rotation & URL filtering
 │   ├── pipelines.py          # Language & length filtering
@@ -130,7 +134,10 @@ The spider outputs the following fields:
 ├── extractor/
 │   ├── text_extractor.py     # Trafilatura-based content extraction
 │   ├── url_extractor.py      # URL parsing and filtering
-│   └── pipefile.py           # Main extraction pipeline
+│   └── protocol.py           # Extractor protocol interface
+├── run_crawler.py            # Spider selection + feed setup
+├── main.py                   # CLI entrypoint
+├── bencmark.py               # Sitemap vs recursive benchmark runner
 ├── rows_count.py             # Utility for data statistics
 ├── Pipfile                   # Dependencies
 └── .env                      # Environment variables (create this)
