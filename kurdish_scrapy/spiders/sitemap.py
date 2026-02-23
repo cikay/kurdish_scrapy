@@ -55,8 +55,21 @@ class SitemapSpider(BaseSitemapSpider):
             return []
 
         robots_content = response.text
-        sitemap_urls = SITEMAP_REGEX.findall(robots_content)
+        sitemap_urls = []
+        for sitemap_url in SITEMAP_REGEX.findall(robots_content):
+            normalized_sitemap_url = urljoin(robots_url, sitemap_url.strip())
+            if cls._is_same_domain(url, normalized_sitemap_url):
+                sitemap_urls.append(normalized_sitemap_url)
+
         return sitemap_urls
+
+    @staticmethod
+    def _is_same_domain(base_url: str, candidate_url: str) -> bool:
+        base_host = (urlparse(base_url).hostname or "").lower().removeprefix("www.")
+        candidate_host = (
+            (urlparse(candidate_url).hostname or "").lower().removeprefix("www.")
+        )
+        return base_host == candidate_host
 
     @classmethod
     def get_sitemap_url_from_patterns(cls, url):
