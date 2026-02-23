@@ -4,6 +4,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
 from kurdish_scrapy.spiders.recursive import RecursiveSpider
+from kurdish_scrapy.spiders.sitemap import SitemapSpider
 from extractor.protocol import ContentExtractorProtocol
 
 
@@ -42,11 +43,20 @@ def run_crawler(output_path: str, content_extractor: ContentExtractorProtocol) -
     urls_to_crawl = settings.get("CRAWLING_DOMAINS")
     crawler_process = CrawlerProcess(settings)
 
-    for url in urls_to_crawl:
-        crawler_process.crawl(
-            RecursiveSpider,
-            url=url,
-            content_extractor=content_extractor,
-        )
+    for url_to_crawl in urls_to_crawl:
+        sitemap_urls = SitemapSpider.get_sitemap_urls(url_to_crawl)
+        crawler_process = CrawlerProcess(settings)
+        if sitemap_urls:
+            crawler_process.crawl(
+                SitemapSpider,
+                content_extractor=content_extractor,
+                sitemap_urls=sitemap_urls,
+            )
+        else:
+            crawler_process.crawl(
+                RecursiveSpider,
+                url=url_to_crawl,
+                content_extractor=content_extractor,
+            )
 
     crawler_process.start()

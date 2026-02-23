@@ -96,6 +96,22 @@ FEED_EXPORT_ENCODING = "utf-8"
 
 SCRAPEOPS_API_KEY = os.getenv("SCRAPEOPS_API_KEY")
 
+SITEMAP_PATTERNS = [
+    "sitemap.xml",
+    "post-sitemap.xml",
+    "blog-posts-sitemap.xml",
+    "sitemaps/post-sitemap.xml",
+    "sitemap_index.xml",
+    "sitemaps/sitemap_index.xml",
+    "sitemaps/sitemap.xml",
+    "sitemaps/sitemap-articles.xml",
+    "/sitemap-index.xml",
+    "/sitemaps.xml",
+    "/sitemap/sitemap.xml",
+    "/wp-sitemap.xml",  # WordPress
+    "/news-sitemap.xml",
+]
+
 SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 10
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = "https://headers.scrapeops.io/v1/user-agents?"
