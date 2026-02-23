@@ -1,6 +1,7 @@
 import re
 import requests
-from urllib.error import URLError
+from requests import Response
+from requests.exceptions import RequestException
 from urllib.parse import urlparse, urljoin
 
 
@@ -40,26 +41,30 @@ class SitemapSpider(BaseSitemapSpider):
         return cls.get_sitemap_url_from_patterns(url)
 
     @classmethod
-    def get_sitemap_urls_from_robots(cls, url: str) -> list[str]:
+    def get_sitemap_urls_from_robots(cls, url: str) -> set[str]:
         parsed_url = urlparse(url)
         robots_url = f"{parsed_url.scheme}://{parsed_url.netloc}/robots.txt"
         try:
-            response = requests.get(url=robots_url)
-        except URLError:
+            response = requests.get(url=robots_url, timeout=10)
+        except RequestException:
             response = None
 
         if not response:
-            return []
+            return set()
 
         if response.status_code != 200:
-            return []
+            return set()
 
         robots_content = response.text
         sitemap_urls = set()
         for sitemap_url in SITEMAP_REGEX.findall(robots_content):
             normalized_sitemap_url = urljoin(robots_url, sitemap_url.strip())
             if cls._is_same_domain(url, normalized_sitemap_url):
-                sitemap_urls.add(normalized_sitemap_url)
+                valid_sitemap_url = cls._fetch_valid_sitemap_url(
+                    url, normalized_sitemap_url
+                )
+                if valid_sitemap_url:
+                    sitemap_urls.add(valid_sitemap_url)
 
         return sitemap_urls
 
@@ -76,12 +81,40 @@ class SitemapSpider(BaseSitemapSpider):
         sitemap_urls = set()
         for sitemap_path in SITEMAP_PATTERNS:
             url_sitemap = urljoin(url, sitemap_path)
-            try:
-                response = requests.get(url=url_sitemap)
-                # Keep sitemaps that exist, including those resulting from redirections
-                if response.status_code in [200, 301, 308]:
-                    sitemap_urls.add(response.url)
-            except URLError:
-                continue
+            valid_sitemap_url = cls._fetch_valid_sitemap_url(url, url_sitemap)
+            if valid_sitemap_url:
+                sitemap_urls.add(valid_sitemap_url)
 
         return sitemap_urls
+
+    @classmethod
+    def _fetch_valid_sitemap_url(cls, base_url: str, candidate_url: str) -> str | None:
+        try:
+            response = requests.get(url=candidate_url, timeout=10, allow_redirects=True)
+        except RequestException:
+            return None
+
+        if response.status_code != 200:
+            return None
+
+        if not cls._is_same_domain(base_url, response.url):
+            return None
+
+        if not cls._is_sitemap_response(response):
+            return None
+
+        return response.url
+
+    @staticmethod
+    def _is_sitemap_response(response: Response) -> bool:
+        content_type = response.headers.get("Content-Type", "").lower()
+        body_preview = response.text[:4096].lstrip().lower()
+        has_sitemap_root_tag = "<urlset" in body_preview or "<sitemapindex" in body_preview
+
+        has_sitemap_xml_root = (
+            body_preview.startswith("<?xml")
+            and has_sitemap_root_tag
+        )
+        has_xml_content_type = "xml" in content_type
+
+        return has_sitemap_xml_root or (has_xml_content_type and has_sitemap_root_tag)
