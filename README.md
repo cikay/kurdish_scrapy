@@ -85,6 +85,22 @@ This displays:
 - Total row count
 - Unique titles, URLs, and texts count
 
+### Run benchmark mode
+
+Use `bencmark.py` to benchmark one domain by running both spiders sequentially (`SitemapSpider` first, then `RecursiveSpider`) and writing timing logs.
+
+Arguments:
+- `--domain`: Required start URL/domain to crawl (use full URL, e.g. `https://www.nuhev.com`)
+- `--sitemap`: Output file for sitemap crawl (`.csv`, `.json`, or `.jsonl`)
+- `--recursive`: Output file for recursive crawl (`.csv`, `.json`, or `.jsonl`)
+- `--benchmark-log` (optional): Log file path for timing details (default: `benchmark.log`)
+
+Example with default log path:
+
+```bash
+python bencmark.py --domain https://www.nuhev.com --sitemap sitemap_output.csv --recursive recursive_output.csv
+```
+
 ## Output Format
 
 The spider outputs the following fields:
