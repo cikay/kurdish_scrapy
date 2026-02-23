@@ -55,11 +55,11 @@ class SitemapSpider(BaseSitemapSpider):
             return []
 
         robots_content = response.text
-        sitemap_urls = []
+        sitemap_urls = set()
         for sitemap_url in SITEMAP_REGEX.findall(robots_content):
             normalized_sitemap_url = urljoin(robots_url, sitemap_url.strip())
             if cls._is_same_domain(url, normalized_sitemap_url):
-                sitemap_urls.append(normalized_sitemap_url)
+                sitemap_urls.add(normalized_sitemap_url)
 
         return sitemap_urls
 
@@ -73,14 +73,14 @@ class SitemapSpider(BaseSitemapSpider):
 
     @classmethod
     def get_sitemap_url_from_patterns(cls, url):
-        sitemap_urls = []
+        sitemap_urls = set()
         for sitemap_path in SITEMAP_PATTERNS:
             url_sitemap = urljoin(url, sitemap_path)
             try:
                 response = requests.get(url=url_sitemap)
                 # Keep sitemaps that exist, including those resulting from redirections
                 if response.status_code in [200, 301, 308]:
-                    sitemap_urls.append(response.url)
+                    sitemap_urls.add(response.url)
             except URLError:
                 continue
 
