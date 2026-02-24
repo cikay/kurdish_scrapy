@@ -26,7 +26,11 @@ def _infer_feed_format(output_path: str) -> str:
     return feed_format
 
 
-def run_crawler(output_path: str, content_extractor: ContentExtractorProtocol) -> None:
+def run_crawler(
+    output_path: str,
+    content_extractor: ContentExtractorProtocol,
+    urls_to_crawl: list[str],
+) -> None:
     feed_format = _infer_feed_format(output_path)
     settings = get_project_settings()
     settings.set(
@@ -40,12 +44,10 @@ def run_crawler(output_path: str, content_extractor: ContentExtractorProtocol) -
         },
         priority="cmdline",
     )
-    urls_to_crawl = settings.get("CRAWLING_DOMAINS")
     crawler_process = CrawlerProcess(settings)
 
     for url_to_crawl in urls_to_crawl:
         sitemap_urls = SitemapSpider.get_sitemap_urls(url_to_crawl)
-        crawler_process = CrawlerProcess(settings)
         if sitemap_urls:
             crawler_process.crawl(
                 SitemapSpider,
