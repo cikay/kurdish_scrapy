@@ -58,12 +58,12 @@ TEXT_MIN_WORD_COUNT=100
 
 ### Configure target domains
 
-Edit `kurdish_scrapy/settings.py` and update `CRAWLING_DOMAINS`:
+Edit `kurdish_domains.json` and list the domains you want to crawl:
 
-```python
-CRAWLING_DOMAINS = [
+```json
+[
     "https://www.nuhev.com/",
-    "https://ajansawelat.com/",
+    "https://ajansawelat.com/"
 ]
 ```
 
@@ -73,7 +73,8 @@ CRAWLING_DOMAINS = [
 python main.py --output output.csv
 ```
 
-For each domain in `CRAWLING_DOMAINS`, the runner tries `SitemapSpider` first (using `robots.txt` and common sitemap paths). If no sitemap is found, it falls back to `RecursiveSpider`.
+`main.py` reads `kurdish_domains.json` and passes those domains to `run_crawler.py`.
+For each domain, the runner tries `SitemapSpider` first (using `robots.txt` and common sitemap paths). If no sitemap is found, it falls back to `RecursiveSpider`.
 
 Supported output formats: `.csv`, `.json`, `.jsonl`
 
@@ -137,6 +138,7 @@ The spider outputs the following fields:
 │   └── protocol.py           # Extractor protocol interface
 ├── run_crawler.py            # Spider selection + feed setup
 ├── main.py                   # CLI entrypoint
+├── kurdish_domains.json      # Crawl target domains
 ├── bencmark.py               # Sitemap vs recursive benchmark runner
 ├── rows_count.py             # Utility for data statistics
 ├── Pipfile                   # Dependencies
