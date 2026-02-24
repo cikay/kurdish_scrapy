@@ -122,5 +122,3 @@ SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = "https://headers.scrapeops.io/v1/user-agent
 # diq_Latn → Zazaki (Latin script)
 ALLOWED_LANGS = os.getenv("ALLOWED_LANGS", "kmr_Latn,ckb_Arab,diq_Latn").split(",")
 TEXT_MIN_WORD_COUNT = int(os.getenv("TEXT_MIN_WORD_COUNT", 100))
-
-CRAWLING_DOMAINS = ["https://www.nuhev.com/", "https://ajansawelat.com/"]
