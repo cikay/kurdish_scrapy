@@ -1,6 +1,6 @@
 # Kurdish Text Data Collector
 
-A Scrapy-based web scraper for collecting Kurdish text data from websites. The tool recursively crawls specified domains, extracts article content using [Trafilatura](https://trafilatura.readthedocs.io/), and filters results by language using Facebook's [FastText language identification model](https://huggingface.co/facebook/fasttext-language-identification).
+A [Scrapy](https://www.scrapy.org/) package based web scraper for collecting Kurdish text data from websites. The tool recursively crawls specified domains, extracts article content using [Trafilatura](https://trafilatura.readthedocs.io/), and filters results by language using Facebook's [FastText language identification model](https://huggingface.co/facebook/fasttext-language-identification).
 
 ## Features
 
