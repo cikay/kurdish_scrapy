@@ -18,7 +18,7 @@ A [Scrapy](https://www.scrapy.org/) package based web scraper for collecting Kur
 
 - Python 3.10
 - [Pipenv](https://pipenv.pypa.io/en/latest/)
-- [ScrapeOps API key](https://scrapeops.io/app/headers) (free tier available)
+- [ScrapeOps API key](https://scrapeops.io/app/headers) (optional, free tier available)
 
 ## Installation
 
@@ -41,18 +41,23 @@ pipenv install
 
 4. Create a `.env` file with your configuration:
 ```bash
-SCRAPEOPS_API_KEY="your_api_key_here"
 ALLOWED_LANGS="kmr_Latn,ckb_Arab,diq_Latn"
 TEXT_MIN_WORD_COUNT=100
+# Optional
+# SCRAPEOPS_API_KEY="your_api_key_here"
 ```
 
 ## Configuration
 
 | Variable | Description | Default |
 |----------|-------------|--------|
-| `SCRAPEOPS_API_KEY` | API key for ScrapeOps user agent rotation | Required |
+| `SCRAPEOPS_API_KEY` | API key for ScrapeOps user agent rotation | Optional |
 | `ALLOWED_LANGS` | Comma-separated language codes to collect | `kmr_Latn,ckb_Arab,diq_Latn` |
 | `TEXT_MIN_WORD_COUNT` | Minimum word count for collected texts | `100` |
+
+Note: `SCRAPEOPS_API_KEY` is currently optional and scraping may still work without it. If this changes in the future and requests start failing, either:
+- obtain a valid ScrapeOps API key, or
+- remove `kurdish_scrapy.middlewares.ScrapeOpsFakeUserAgentMiddleware` from `DOWNLOADER_MIDDLEWARES` in `kurdish_scrapy/settings.py`.
 
 ## Usage
 
