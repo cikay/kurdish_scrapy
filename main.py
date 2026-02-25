@@ -19,9 +19,18 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def normalize_domains(domains: list) -> set[str]:
+    return {
+        domain.strip().rstrip("/")
+        for domain in domains
+        if isinstance(domain, str) and domain.strip()
+    }
+
+
 def main():
     args = parse_args()
     urls_to_crawl = json.loads(Path("kurdish_domains.json").read_text(encoding="utf-8"))
+    urls_to_crawl = normalize_domains(urls_to_crawl)
     run_crawler(
         output_path=args.output,
         content_extractor=ArticleExtractor(),

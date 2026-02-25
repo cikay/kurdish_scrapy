@@ -29,7 +29,7 @@ def _infer_feed_format(output_path: str) -> str:
 def run_crawler(
     output_path: str,
     content_extractor: ContentExtractorProtocol,
-    urls_to_crawl: list[str],
+    urls_to_crawl: set[str],
 ) -> None:
     feed_format = _infer_feed_format(output_path)
     settings = get_project_settings()
