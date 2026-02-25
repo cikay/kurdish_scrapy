@@ -60,11 +60,7 @@ class SitemapSpider(BaseSitemapSpider):
         for sitemap_url in SITEMAP_REGEX.findall(robots_content):
             normalized_sitemap_url = urljoin(robots_url, sitemap_url.strip())
             if cls._is_same_domain(url, normalized_sitemap_url):
-                valid_sitemap_url = cls._fetch_valid_sitemap_url(
-                    url, normalized_sitemap_url
-                )
-                if valid_sitemap_url:
-                    sitemap_urls.add(valid_sitemap_url)
+                sitemap_urls.add(normalized_sitemap_url)
 
         return sitemap_urls
 
@@ -81,29 +77,8 @@ class SitemapSpider(BaseSitemapSpider):
         sitemap_urls = set()
         for sitemap_path in SITEMAP_PATTERNS:
             url_sitemap = urljoin(url, sitemap_path)
-            valid_sitemap_url = cls._fetch_valid_sitemap_url(url, url_sitemap)
-            if valid_sitemap_url:
-                sitemap_urls.add(valid_sitemap_url)
-
+            sitemap_urls.add(url_sitemap)
         return sitemap_urls
-
-    @classmethod
-    def _fetch_valid_sitemap_url(cls, base_url: str, candidate_url: str) -> str | None:
-        try:
-            response = requests.get(url=candidate_url, timeout=10, allow_redirects=True)
-        except RequestException:
-            return None
-
-        if response.status_code != 200:
-            return None
-
-        if not cls._is_same_domain(base_url, response.url):
-            return None
-
-        if not cls._is_sitemap_response(response):
-            return None
-
-        return response.url
 
     @staticmethod
     def _is_sitemap_response(response: Response) -> bool:
