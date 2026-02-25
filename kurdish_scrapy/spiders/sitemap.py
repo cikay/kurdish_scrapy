@@ -35,6 +35,10 @@ class SitemapSpider(BaseSitemapSpider):
     @classmethod
     def get_sitemap_urls(cls, url):
         sitemap_urls_from_robots = cls.get_sitemap_urls_from_robots(url)
+        import pdb
+
+        pdb.set_trace()
+
         if sitemap_urls_from_robots:
             return sitemap_urls_from_robots
 
@@ -78,6 +82,7 @@ class SitemapSpider(BaseSitemapSpider):
         for sitemap_path in SITEMAP_PATTERNS:
             url_sitemap = urljoin(url, sitemap_path)
             sitemap_urls.add(url_sitemap)
+        import pdb; pdb.set_trace()
         return sitemap_urls
 
     @staticmethod
