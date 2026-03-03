@@ -78,6 +78,12 @@ Edit `kurdish_domains.json` and list the domains you want to crawl:
 python main.py --output output.csv
 ```
 
+For production/server runs, write logs to a file so crashes are preserved:
+
+```bash
+python main.py --output output.csv --log-file logs/crawler.log --log-level INFO
+```
+
 `main.py` reads `kurdish_domains.json` and passes those domains to `run_crawler.py`.
 For each domain, the runner tries `SitemapSpider` first (using `robots.txt` and common sitemap paths). If no sitemap is found, it falls back to `RecursiveSpider`.
 

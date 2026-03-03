@@ -15,7 +15,12 @@ from kurdish_scrapy.settings import ALLOWED_LANGS, TEXT_MIN_WORD_COUNT
 class LenPipeline:
     def process_item(self, item, spider):
         if item["word_count"] < TEXT_MIN_WORD_COUNT:
-            print("Text is too short, dropping item")
+            spider.logger.debug(
+                "Dropping short text (%s words, min=%s): %s",
+                item["word_count"],
+                TEXT_MIN_WORD_COUNT,
+                item.get("url", "<unknown-url>"),
+            )
             raise DropItem("Text is too short")
 
         return item
@@ -25,7 +30,11 @@ class LanguagePipeline:
     def process_item(self, item, spider):
         lang = item["lang"]
         if lang not in ALLOWED_LANGS:
-            print(f"Dropping non-Kurdish text ({lang})")
+            spider.logger.debug(
+                "Dropping non-Kurdish text (%s): %s",
+                lang,
+                item.get("url", "<unknown-url>"),
+            )
             raise DropItem(f"Item is not Kurdish ({lang})")
 
         return item
