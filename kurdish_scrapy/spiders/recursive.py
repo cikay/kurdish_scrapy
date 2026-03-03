@@ -8,17 +8,17 @@ class RecursiveSpider(BaseSpider):
     name = "recursive_spider"
 
     def parse(self, response):
-        print(f"[DEBUG] Processing: {response.url}")
+        self.logger.debug("Processing %s", response.url)
         if not UrlExtractor.content_type(response):
-            print(f"[DEBUG] Skipped (not HTML): {response.url}")
+            self.logger.debug("Skipped non-HTML response: %s", response.url)
             return
 
         result = self.content_extractor.extract(response.text, response.url)
         if result:
-            print(f"[DEBUG] Yielding article: {response.url}")
+            self.logger.debug("Yielding article item: %s", response.url)
             yield result
         else:
-            print(f"[DEBUG] Extraction returned None: {response.url}")
+            self.logger.debug("Extraction returned None: %s", response.url)
 
         # Follow internal links recursively when enabled.
         url_extractor = UrlExtractor()

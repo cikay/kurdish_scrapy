@@ -23,9 +23,9 @@ class SitemapSpider(BaseSitemapSpider):
         self.sitemap_urls = sitemap_urls
 
     def parse(self, response):
-        print(f"[DEBUG] Processing: {response.url}")
+        self.logger.debug("Processing %s", response.url)
         if not UrlExtractor.content_type(response):
-            print(f"[DEBUG] Skipped (not HTML): {response.url}")
+            self.logger.debug("Skipped non-HTML response: %s", response.url)
             return
 
         result = self.content_extractor.extract(response.text, response.url)
@@ -35,6 +35,7 @@ class SitemapSpider(BaseSitemapSpider):
     @classmethod
     def get_sitemap_urls(cls, url):
         sitemap_urls_from_robots = cls.get_sitemap_urls_from_robots(url)
+
         if sitemap_urls_from_robots:
             return sitemap_urls_from_robots
 
