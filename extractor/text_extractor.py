@@ -57,6 +57,9 @@ class ArticleExtractor:
             with_metadata=self.with_metadata,
         )
 
+        if json_output is None:
+            return
+
         output = json.loads(json_output)
 
         text = output.get("text") or ""
