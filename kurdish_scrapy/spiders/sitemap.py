@@ -78,7 +78,14 @@ class SitemapSpider(BaseSitemapSpider):
         sitemap_urls = set()
         for sitemap_path in SITEMAP_PATTERNS:
             url_sitemap = urljoin(url, sitemap_path)
-            sitemap_urls.add(url_sitemap)
+            try:
+                response = requests.get(url=url_sitemap)
+                # Keep sitemaps that exist, including those resulting from redirections
+                if response.status_code in [200, 301, 308]:
+                    sitemap_urls.add(response.url)
+            except Exception:
+                continue
+
         return sitemap_urls
 
     @staticmethod
