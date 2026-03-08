@@ -75,6 +75,20 @@ class SitemapSpider(BaseSitemapSpider):
 
     @classmethod
     def get_sitemap_url_from_patterns(cls, url):
+        """
+        Discover sitemap URLs by probing common sitemap path patterns against the given URL.
+
+        Iterates over each path in SITEMAP_PATTERNS, constructs a candidate sitemap URL
+        by joining it with the base URL, and performs an HTTP GET request. Candidates that
+        return a 200, 301, or 308 status code (i.e. exist or redirect) are included in the
+        result, using the final resolved URL after any redirections.
+
+        Args:
+            url (str): The base URL of the website to check sitemap patterns against.
+
+        Returns:
+            set[str]: A set of discovered sitemap URLs (resolved after redirects).
+        """
         sitemap_urls = set()
         for sitemap_path in SITEMAP_PATTERNS:
             url_sitemap = urljoin(url, sitemap_path)
