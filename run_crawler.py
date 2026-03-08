@@ -72,6 +72,7 @@ def run_crawler(
     logger.info("Scheduling spiders for %d domain(s)", len(urls_to_crawl))
     for url_to_crawl in urls_to_crawl:
         sitemap_urls = SitemapSpider.get_sitemap_urls(url_to_crawl)
+        import pdb; pdb.set_trace()
         if sitemap_urls:
             logger.info(
                 "Using sitemap spider for %s (%d sitemap URL candidates)",
